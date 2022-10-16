@@ -1,10 +1,27 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return 'Atividade de Docker com Python.'
+def main():
+  resultado = 'Entre as notas na URL'    
 
-@app.route('/pessoas/<string:nome>/<string:cidade>')
-def pessoa(nome,cidade):
-    return jsonify({'nome':nome,'cidade':cidade})
+  primeira = request.args.get('primeira')
+  segunda = request.args.get('segunda')
+
+  if primeira and segunda:
+        
+    primeira = float(primeira)
+    segunda = float(segunda)
+
+    media = (primeira + segunda) / 2
+    if media >= 7:
+        resultado = 'Aprovado'
+    elif media >= 4:
+        resultado = 'Recuperação'
+    else:
+        resultado = 'Reprovado'
+
+  return resultado
+
+if __name__ == '__main__':
+  app.run(debug=True)
